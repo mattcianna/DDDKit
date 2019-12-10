@@ -58,7 +58,7 @@ public class DDDRenderingController: NSObject {
 		size = view.frame.size
 
 		let api = EAGLRenderingAPI.openGLES2
-		context = EAGLContext(api: api)
+        context = EAGLContext(api: api)!
 		if !EAGLContext.setCurrent(context) {
 			print("could not set eagl context")
 		}
@@ -79,7 +79,7 @@ public class DDDRenderingController: NSObject {
 		self.size = size
 
 		let api = EAGLRenderingAPI.openGLES2
-		context = EAGLContext(api: api)
+        context = EAGLContext(api: api)!
 		if !EAGLContext.setCurrent(context) {
 			print("could not set eagl context")
 		}
@@ -194,13 +194,13 @@ public class DDDRenderingController: NSObject {
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(applicationWillResignActive),
-			name: NSNotification.Name.UIApplicationWillResignActive,
+            name: UIApplication.willResignActiveNotification,
 			object: nil
 		)
 		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(applicationDidBecomeActive),
-			name: NSNotification.Name.UIApplicationDidBecomeActive,
+            name: UIApplication.didBecomeActiveNotification,
 			object: nil
 		)
 	}
@@ -260,7 +260,7 @@ public class DDDRenderingController: NSObject {
 
 		glClear(GLbitfield(GL_COLOR_BUFFER_BIT))
 
-		let aspect = Float(fabs(size.width / size.height))
+        let aspect = Float(abs(size.width / size.height))
 		let projection = GLKMatrix4MakePerspective(cameraOverture, aspect, 0.1, 400.0)
 
 		let isReady = scene.render(with: Mat4(m: projection.m), context: context, in: texturesPool)
@@ -293,7 +293,7 @@ public class DDDRenderingController: NSObject {
 	private func restartLoop() {
 		stopLoop()
 		let displayLink = CADisplayLink(target: self, selector: #selector(DDDRenderingController.render(displayLink:)))
-		displayLink.add(to: RunLoop.current, forMode: .commonModes)
+        displayLink.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
 		self.displayLink = displayLink
 	}
 

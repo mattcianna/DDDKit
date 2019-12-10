@@ -53,10 +53,10 @@ public class DDDVideoTexture: DDDVideoBufferTexture {
 	private func retrievePixelBufferToDraw() -> CVPixelBuffer? {
 		guard let videoItem = player.currentItem else { return nil }
 		if videoOutput == nil || self.videoItem !== videoItem {
-			videoItem.outputs.flatMap({ return $0 as? AVPlayerItemVideoOutput }).forEach {
+            videoItem.outputs.compactMap({ return $0 as? AVPlayerItemVideoOutput }).forEach {
 				videoItem.remove($0)
 			}
-			if videoItem.status != AVPlayerItemStatus.readyToPlay {
+            if videoItem.status != AVPlayerItem.Status.readyToPlay {
 				// see https://forums.developer.apple.com/thread/27589#128476
 				return nil
 			}
